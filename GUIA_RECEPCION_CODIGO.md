@@ -27,7 +27,7 @@ flowchart LR
   H --> C
 ```
 
-El ciclo de decisiones está en [agent.py](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/agent.py:228>):
+El ciclo de decisiones está en [agent.py](recepcion/agent.py#L228):
 
 ```python
 agent = create_agent(self.model, tools=tool_list,
@@ -52,9 +52,9 @@ y a su [integración con Gemini y audio](https://docs.langchain.com/oss/python/i
 
 **Ejemplo:** «Hola, quiero una cita».
 
-Código: [chatwoot_webhook](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/api.py:58>),
-[normalize](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/chatwoot.py:19>)
-y [ingest_inbound_message](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/OdontoFlow-Backend-github-clean/app/messaging/service.py:88>).
+Código: [chatwoot_webhook](recepcion/api.py#L58),
+[normalize](recepcion/chatwoot.py#L19)
+y [ingest_inbound_message](OdontoFlow-Backend-github-clean/app/messaging/service.py#L88).
 
 1. Chatwoot llama a `POST /webhooks/chatwoot` con el evento.
 2. La API comprueba el secreto del webhook.
@@ -79,8 +79,8 @@ cuando existe, su respuesta completada.
 
 **Ejemplo:** «Hola» → «quiero limpieza» → «el lunes».
 
-Código: [Store.enqueue](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/store.py:63>)
-y [Chatwoot.process](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/chatwoot.py:150>).
+Código: [Store.enqueue](recepcion/store.py#L63)
+y [Chatwoot.process](recepcion/chatwoot.py#L150).
 
 La recepción espera 30 segundos por defecto, configurables con
 `RECEPTION_BUFFER_SECONDS`. Cada nuevo fragmento desplaza el vencimiento del
@@ -100,9 +100,9 @@ que un «sí» entregado tarde se aplique después de un «no» más reciente.
 
 **Ejemplos:** «¿Cuánto cuesta una limpieza?», «¿Dónde atienden?».
 
-Código: [SCHEMAS y DESCRIPTIONS](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/agent.py:15>),
-[_execute_tool](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/OdontoFlow-Backend-github-clean/app/agent_tools/service.py:162>)
-y [reception_context](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/OdontoFlow-Backend-github-clean/app/agent_tools/reception.py:121>).
+Código: [SCHEMAS y DESCRIPTIONS](recepcion/agent.py#L15),
+[_execute_tool](OdontoFlow-Backend-github-clean/app/agent_tools/service.py#L162)
+y [reception_context](OdontoFlow-Backend-github-clean/app/agent_tools/reception.py#L121).
 
 Las herramientas son `list_services`, `list_locations` y `get_reception_context`.
 El contexto contiene servicios activos, descripción, duración, precio base,
@@ -129,9 +129,9 @@ debe evaluar con el catálogo real antes del piloto.
 **Ejemplo:** «Me llamo Ana Pérez».
 
 Código: `get_contact_profile` y `register_contact_profile` en
-[agent.py](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/agent.py:22>),
-[RegisterContactProfileArguments](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/contracts.py:61>)
-y [register_contact_profile](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/OdontoFlow-Backend-github-clean/app/agent_tools/reception.py:557>).
+[agent.py](recepcion/agent.py#L22),
+[RegisterContactProfileArguments](recepcion/contracts.py#L61)
+y [register_contact_profile](OdontoFlow-Backend-github-clean/app/agent_tools/reception.py#L557).
 
 El agente consulta primero los datos disponibles y puede registrar nombre,
 DNI y fecha de nacimiento que proporcione el contacto. El nombre tiene longitud
@@ -149,8 +149,8 @@ registra un perfil antes de buscar y reservar una cita.
 **Ejemplo:** «¿Tienen limpieza el lunes por la mañana?».
 
 Código: `list_eligible_practitioners`, `query_available_slots`,
-[AvailableSlotsArguments](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/contracts.py:127>)
-y [find_available_slots](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/OdontoFlow-Backend-github-clean/app/scheduling/query.py>).
+[AvailableSlotsArguments](recepcion/contracts.py#L127)
+y [find_available_slots](OdontoFlow-Backend-github-clean/app/scheduling/query.py).
 
 La conversación determina servicio, sede y ventana de búsqueda. El backend
 consulta profesionales habilitados, reglas de disponibilidad, bloqueos y citas.
@@ -179,9 +179,9 @@ no lo reserva.
 **Ejemplo:** «Quiero el lunes a las nueve» → resumen → «Sí, confirmo».
 
 Código: `propose_appointment`, `confirm_appointment`,
-[confirmation_allowed](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/policy.py:46>),
-[create_contact_booking_proposal](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/OdontoFlow-Backend-github-clean/app/agent_tools/booking.py:114>)
-y [confirm_contact_booking_proposal](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/OdontoFlow-Backend-github-clean/app/agent_tools/booking.py:257>).
+[confirmation_allowed](recepcion/policy.py#L46),
+[create_contact_booking_proposal](OdontoFlow-Backend-github-clean/app/agent_tools/booking.py#L114)
+y [confirm_contact_booking_proposal](OdontoFlow-Backend-github-clean/app/agent_tools/booking.py#L257).
 
 Primero se crea una propuesta con nombre, servicio, sede, profesional y hora.
 El backend devuelve el ID, token, vigencia y horario. `proposal_text` forma un
@@ -218,8 +218,8 @@ otro horario.
 **Ejemplo:** «¿Qué cita tengo pendiente?».
 
 Código: `list_contact_appointments` en
-[agent.py](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/agent.py:20>)
-y [_contact_appointments_statement](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/OdontoFlow-Backend-github-clean/app/agent_tools/service.py:149>).
+[agent.py](recepcion/agent.py#L20)
+y [_contact_appointments_statement](OdontoFlow-Backend-github-clean/app/agent_tools/service.py#L149).
 
 La herramienta usa la conversación actual para identificar el contacto. La
 consulta queda filtrada por organización y contacto. Es la base para elegir
@@ -232,9 +232,9 @@ cuál desea modificar el paciente. No se expone al modelo la herramienta general
 **Ejemplo:** «Quiero cancelar mi cita del lunes» → resumen → «Sí, confirmo».
 
 Código: `propose_cancellation`, `confirm_cancellation`,
-[Backend.tool](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/backend.py:33>),
-[create_cancellation_proposal](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/OdontoFlow-Backend-github-clean/app/agent_tools/reception.py:732>)
-y [confirm_cancellation_proposal](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/OdontoFlow-Backend-github-clean/app/agent_tools/reception.py:834>).
+[Backend.tool](recepcion/backend.py#L33),
+[create_cancellation_proposal](OdontoFlow-Backend-github-clean/app/agent_tools/reception.py#L732)
+y [confirm_cancellation_proposal](OdontoFlow-Backend-github-clean/app/agent_tools/reception.py#L834).
 
 Primero se identifica la cita propia y se crea la propuesta de cancelación.
 La cita continúa confirmada mientras el paciente no confirme la propuesta.
@@ -256,8 +256,8 @@ no sirve para confirmar una cancelación. Al completar la operación se devuelve
 **Ejemplo:** «Pásala a las diez» → nueva propuesta → «Sí, confirmo».
 
 Código: `propose_reschedule`, `confirm_reschedule`,
-[create_reschedule_proposal](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/OdontoFlow-Backend-github-clean/app/agent_tools/reception.py:1044>)
-y [confirm_reschedule_proposal](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/OdontoFlow-Backend-github-clean/app/agent_tools/reception.py:1146>).
+[create_reschedule_proposal](OdontoFlow-Backend-github-clean/app/agent_tools/reception.py#L1044)
+y [confirm_reschedule_proposal](OdontoFlow-Backend-github-clean/app/agent_tools/reception.py#L1146).
 
 Se consulta la cita propia, se busca un horario y se propone `appointment_id`
 con `new_start`. El resumen muestra la cita original y la nueva hora. La cita
@@ -273,7 +273,7 @@ cita original.
 
 **Ejemplo:** una nota de voz que dice «Quiero reservar una limpieza».
 
-Código: [Chatwoot.transcribe](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/chatwoot.py:111>).
+Código: [Chatwoot.transcribe](recepcion/chatwoot.py#L111).
 
 Se admite un adjunto de audio por mensaje. Su URL debe pertenecer a Chatwoot o
 a un origen exacto de `MEDIA_ALLOWED_ORIGINS`. También se comprueba el origen
@@ -297,9 +297,9 @@ ni atención telefónica en esta implementación.
 
 **Ejemplos:** «Quiero hablar con una persona», «tengo un reclamo».
 
-Código: [handoff_reason](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/policy.py:33>),
-`request_human_handoff`, [request_handoff](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/OdontoFlow-Backend-github-clean/app/agent_tools/reception.py:1292>)
-y [Chatwoot.sync_handoff](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/chatwoot.py:91>).
+Código: [handoff_reason](recepcion/policy.py#L33),
+`request_human_handoff`, [request_handoff](OdontoFlow-Backend-github-clean/app/agent_tools/reception.py#L1292)
+y [Chatwoot.sync_handoff](recepcion/chatwoot.py#L91).
 
 La política reconoce expresiones comunes de solicitud humana, queja, síntomas
 urgentes y consulta clínica. Es una clasificación por patrones, no una evaluación
@@ -322,9 +322,9 @@ precios. La calidad del lenguaje clínico del modelo aún requiere evaluación r
 
 **Acción del operador:** nota privada `/reanudar` dentro de la conversación.
 
-Código: [chatwoot_webhook](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/api.py:58>),
-[Chatwoot.resume](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/chatwoot.py:80>)
-y [resume_automation](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/OdontoFlow-Backend-github-clean/app/agent_tools/reception.py:1374>).
+Código: [chatwoot_webhook](recepcion/api.py#L58),
+[Chatwoot.resume](recepcion/chatwoot.py#L80)
+y [resume_automation](OdontoFlow-Backend-github-clean/app/agent_tools/reception.py#L1374).
 
 La nota debe ser privada, de un usuario de Chatwoot, de la cuenta y bandeja
 correctas. La API usa el token de operador para abrir la conversación en el
@@ -337,9 +337,9 @@ Escribir `/reanudar` como paciente no activa esta acción.
 
 ## 14. Recordar el avance de la conversación
 
-Código: [update_progress](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/agent.py:84>),
-[ReceptionState](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/message_contracts.py:41>)
-y [Reception.complete](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/agent.py:253>).
+Código: [update_progress](recepcion/agent.py#L84),
+[ReceptionState](recepcion/message_contracts.py#L41)
+y [Reception.complete](recepcion/agent.py#L253).
 
 En cada turno se recupera contexto autorizado del backend: los últimos ocho
 mensajes visibles, perfil, citas, propuesta pendiente y checkpoint. Después de
@@ -360,10 +360,10 @@ y retención, mientras que el checkpoint mantiene el avance estructurado.
 
 ## 15. Entregar respuestas y recuperarse de fallos
 
-Código: [Backend.post](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/backend.py:13>),
-[Chatwoot.dispatch](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/chatwoot.py:223>),
-[Store](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/store.py:6>)
-y [claim_outbound_messages](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/OdontoFlow-Backend-github-clean/app/messaging/service.py:370>).
+Código: [Backend.post](recepcion/backend.py#L13),
+[Chatwoot.dispatch](recepcion/chatwoot.py#L223),
+[Store](recepcion/store.py#L6)
+y [claim_outbound_messages](OdontoFlow-Backend-github-clean/app/messaging/service.py#L370).
 
 Cada operación de escritura usa una clave UUID persistente. Si la API confirmó
 una reserva pero la respuesta se perdió, la recepción repite esa misma operación
@@ -394,9 +394,9 @@ por Chatwoot más una respuesta posterior, no un comprobante de lectura.
 
 ## 16. Supervisar y arrancar el servicio
 
-Código: [status](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/api.py:97>),
-[doctor.py](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/recepcion/doctor.py>)
-y [start.ps1](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/start.ps1>).
+Código: [status](recepcion/api.py#L97),
+[doctor.py](recepcion/doctor.py)
+y [start.ps1](start.ps1).
 
 `GET /health` verifica que el proceso responde. `GET /status`, autenticado con
 `RECEPTION_API_KEY`, muestra conteos de entradas pendientes/fallidas, asignaciones
@@ -414,7 +414,7 @@ actualizar: contiene información necesaria para evitar duplicaciones.
 ## 17. Qué se probó y qué queda fuera
 
 La evidencia actual y los comandos reproducibles están en
-[VALIDACION.md](<C:/Users/leona/OneDrive/Documentos/ChatGPT/Proyecto Odonto Smart/recepcion-langchain/VALIDACION.md>).
+[VALIDACION.md](VALIDACION.md).
 Hay pruebas de regresión de los fallos originales, escenarios del agente y un
 recorrido con LangChain, API OdontoFlow y PostgreSQL reales. En ese recorrido,
 Gemini y Chatwoot se sustituyen por proveedores controlados de prueba.
@@ -429,3 +429,5 @@ de lectura de WhatsApp. El backend puede devolver datos de una cita útiles
 para calendario, pero eso no crea un evento en Google Calendar.
 Varias réplicas y retención automatizada de SQLite son trabajo posterior al
 piloto de un único proceso.
+
+

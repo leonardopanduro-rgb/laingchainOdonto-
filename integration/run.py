@@ -4,7 +4,10 @@ import sys
 from pathlib import Path
 from sqlalchemy.engine import make_url
 
-ROOT = Path(__file__).resolve().parents[2] / 'OdontoFlow-Backend-github-clean'
+REPOSITORY = Path(__file__).resolve().parents[1]
+ROOT = REPOSITORY / 'OdontoFlow-Backend-github-clean'
+if not ROOT.is_dir():
+    ROOT = REPOSITORY.parent / 'OdontoFlow-Backend-github-clean'
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'tests'))
 from app.config import get_settings

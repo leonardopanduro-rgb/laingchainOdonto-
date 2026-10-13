@@ -6,6 +6,15 @@ OdontoFlow valida y guarda operaciones en PostgreSQL; Chatwoot conecta WhatsApp.
 **Estado:** código local corregido y verificado; conexión y aceptación con
 Gemini/Chatwoot/WhatsApp reales pendientes. No se ha cambiado el webhook activo.
 
+## ¿Cuál backend usa?
+
+La recepción es un servicio Python nuevo. El backend de OdontoFlow ya existía;
+ahora también está incluido en este repositorio dentro de
+`OdontoFlow-Backend-github-clean/`. En el disco, su ruta es
+`C:\Users\leona\OneDrive\Documentos\ChatGPT\Proyecto Odonto Smart\recepcion-langchain\OdontoFlow-Backend-github-clean`.
+El agente envía las solicitudes a la API FastAPI del backend, que valida y guarda
+los cambios en PostgreSQL. Son dos procesos y el backend conserva su base de datos.
+
 - `GUIA_RECEPCION_CODIGO.md`: cada tarea, flujo, función y ejemplos de código.
 - `VALIDACION.md`: resultados, límites y comandos reproducibles.
 - `audit/INFORME_INICIAL.md`: auditoría histórica previa a las correcciones.
@@ -34,7 +43,7 @@ Siempre usar `--workers 1`; este servicio utiliza SQLite y locks del proceso.
 
 | Variable | Uso |
 |---|---|
-| `ODONTO_BACKEND_URL` | URL del backend actualizado de `OdontoFlow-Backend-github-clean` |
+| `ODONTO_BACKEND_URL` | URL de la API FastAPI del backend en `OdontoFlow-Backend-github-clean/` |
 | `ODONTO_INBOUND_TOKEN` | Credencial del perfil de ingreso de mensajes |
 | `ODONTO_AGENT_TOKEN` | Credencial del agente de recepción y su organización |
 | `RECEPTION_API_KEY` | Clave privada para `/messages` y `/status` |
@@ -54,11 +63,31 @@ Siempre usar `--workers 1`; este servicio utiliza SQLite y locks del proceso.
 Para laboratorio HTTP se puede dejar `CHATWOOT_URL` vacía. El modelo y el backend
 siguen necesitando sus credenciales. Las pruebas automatizadas no las requieren.
 
-El backend debe incluir el nuevo `OutboundClaimRequest.outbound_ids`; el doctor
-online lo comprueba. No apuntar automáticamente a un contenedor de una versión
-anterior: en este equipo había otro backend en el puerto 8000. Actualizar o
-seleccionar deliberadamente el backend correcto y conservar su organización,
-catálogo y credenciales. No reutilizar la base `odontoflow_test` para el servicio.
+El backend incluido contiene el contrato `OutboundClaimRequest.outbound_ids`;
+el doctor online lo comprueba. Inicia este backend desde su carpeta para que el
+servicio use la versión correcta. Mantén allí la organización, el catálogo y sus
+credenciales. No reutilices la base `odontoflow_test` para pacientes.
+
+## Iniciar los dos procesos en Windows
+
+Desde la raíz del repositorio, abre una ventana PowerShell para OdontoFlow:
+
+```powershell
+Set-Location .\OdontoFlow-Backend-github-clean
+docker compose up -d db
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e '.[dev]'
+Copy-Item .env.example .env  # completar solo si todavía no existe
+.\.venv\Scripts\alembic.exe upgrade head
+.\.venv\Scripts\python.exe -m uvicorn app:app --host 127.0.0.1 --port 8000
+```
+
+En otra ventana, desde la raíz del repositorio, inicia la recepción con
+`start.ps1`. Para WhatsApp, `ODONTO_BACKEND_URL` apunta a ese proceso en
+`http://127.0.0.1:8000`; sus credenciales deben corresponder a la organización
+del canal. El backend conserva su base PostgreSQL y se ejecuta como proceso
+separado. Si ejecutas la recepción en Docker, usa `host.docker.internal` en
+`ODONTO_BACKEND_URL` para llegar al backend de Windows.
 
 ## Activar la bandeja
 
@@ -114,7 +143,7 @@ acústica ni disponibilidad de Gemini.
 Integración opcional con PostgreSQL local, sin otra suite de backend ejecutándose:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install -e '../OdontoFlow-Backend-github-clean[dev]'
+.\.venv\Scripts\python.exe -m pip install -e '.\OdontoFlow-Backend-github-clean[dev]'
 .\.venv\Scripts\python.exe integration/run.py
 ```
 
